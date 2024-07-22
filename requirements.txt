@@ -1,0 +1,8 @@
+requests
+python-telegram-bot
+pytz
+opencage
+Flask
+openpyxl
+playwright
+pandas
