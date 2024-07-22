@@ -6,3 +6,4 @@ Flask
 openpyxl
 playwright
 pandas
+pillow
