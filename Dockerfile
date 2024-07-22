@@ -39,9 +39,8 @@ RUN python -m venv /venv
 COPY requirements.txt /app/
 RUN /venv/bin/pip install --no-cache-dir -r /app/requirements.txt
 
-# Install Playwright and its dependencies
 RUN /venv/bin/pip install playwright && \
-    playwright install
+    /venv/bin/playwright install
 
 # Copy all other application files
 COPY . /app/
