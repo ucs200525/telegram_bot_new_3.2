@@ -1,26 +1,11 @@
-# Use an official Node.js runtime as a parent image
-FROM node:lts-slim as node-builder
-
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
-
-# Install Node.js dependencies
-RUN npm install
 
 # Copy the rest of the Node.js application code to the working directory
 COPY . .
 
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
-
-# Set the working directory in the container
-WORKDIR /usr/src/app
-
-# Copy installed Node.js modules from the previous stage
-COPY --from=node-builder /usr/src/app /usr/src/app
 
 # Install Puppeteer dependencies
 RUN apt-get update && apt-get install -y \
