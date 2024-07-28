@@ -29,18 +29,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Install SSH Keys
-        run: |
-          # Create and set permissions for the SSH key file
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          
-          # Write the private key to the file
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          
-          # Ensure the known hosts file exists and add the SSH host
-          mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
-
       - name: Connect and Pull Docker Image
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
