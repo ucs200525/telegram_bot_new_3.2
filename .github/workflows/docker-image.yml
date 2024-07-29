@@ -53,4 +53,4 @@ jobs:
 
       - name: Run Docker Container
         run: |
-          docker run -it --name my_container -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          docker run -d --name my_container -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
