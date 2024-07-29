@@ -29,9 +29,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Connect and Pull Docker Image
+      - name: Setup Docker
         run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && docker compose pull && docker compose up -d && exit"
+          sudo apt-get update
+          sudo apt-get install -y docker.io
+
+      - name: Login to GitHub Container Registry
+        run: |
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull Docker Image
+        run: |
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Run Docker Container
+        run: |
+          docker run -d --name my_container -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Cleanup SSH Keys
         run: rm -rf ~/.ssh
