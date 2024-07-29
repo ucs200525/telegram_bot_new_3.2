@@ -55,5 +55,3 @@ jobs:
         run: |
           docker run -d --name my_container -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Cleanup SSH Keys
-        run: rm -rf ~/.ssh
