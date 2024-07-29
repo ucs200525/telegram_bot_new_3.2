@@ -22,6 +22,7 @@ jobs:
         run: |
           docker build --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} .
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
   deploy:
     needs: publish
     name: deploy image
@@ -41,16 +42,14 @@ jobs:
         run: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Remove Existing Container
+        run: |
+          docker stop my_container || true
+          docker rm my_container || true
+
       - name: Pull Docker Image
         run: |
           docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Run Docker Container
-        run: |
-          docker run -d --name my_container -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Cleanup SSH Keys
-        run: rm -rf ~/.ssh
 
       - name: Run Docker Container
         run: |
